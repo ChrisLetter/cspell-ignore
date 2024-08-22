@@ -12,9 +12,9 @@ local function ignore_word()
   local current_dir = debug.getinfo(1, "S").source:sub(2):match(".*/")
 
   -- checking if the ignore list file exists and if not, create it
-  local file = io.open(current_dir .. "ignore-list.txt", "a")
+  local file = io.open(current_dir .. ".." .. "/ignore-list.txt", "a")
   if file == nil then
-    file = assert(io.open(current_dir .. "ignore-list.txt", "w"))
+    file = assert(io.open(current_dir .. ".." .. "/ignore-list.txt", "w"))
     file:write("")
   end
 
@@ -24,7 +24,7 @@ local function ignore_word()
   print("cspell ignore - adding: " .. word_to_ignore)
 
   if cspell_path then
-    os.execute("node " .. current_dir .. "/update-cspell-config.mjs" .. " " .. cspell_path)
+    os.execute("node " .. current_dir .. ".." .. "/update-cspell-config.mjs" .. " " .. cspell_path)
   else
     print("cspell ignore - please provide the cspell path")
   end

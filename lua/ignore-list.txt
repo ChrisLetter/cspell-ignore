@@ -1,5 +1,0 @@
-eovim
-lspconfig
-lspconfig
-bufnr
-earch
