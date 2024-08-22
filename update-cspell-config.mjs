@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 try {
   const ignoreList = readFileSync(`${__dirname}/ignore-list.txt`, 'utf8')
-  const wordsToIgnore = ignoreList.split(',').filter(e => e.length)
+  const wordsToIgnore = ignoreList.split('\n').filter(e => e.length)
 
   const cspellPath = process.argv[2]
   const rawConfig = readFileSync(`${homedir()}/${cspellPath}`, 'utf8')
