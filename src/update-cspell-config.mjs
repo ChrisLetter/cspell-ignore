@@ -61,7 +61,7 @@ function getAllWordsToIgnore (cspellConfig, ignoreList) {
 }
 
 /**
- ** Update the cspell configuration file by adding the list of words to ignore.
+ * Update the cspell configuration file by adding the list of words to ignore.
  *
  * @param {Object} cspellConfig The cspell configuration.
  * @param {string[]} allWordsToIgnore The list of unique words to ignore.
