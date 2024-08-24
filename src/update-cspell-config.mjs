@@ -14,7 +14,7 @@ try {
 }
 
 /**
- * Get the list of words to ignore from the ignore-list.txt file.
+ * Read from the ignore-list.txt file and return the list of words to ignore.
  *
  * @returns {string[]} The list of words to ignore.
  * @throws {Error} If something goes wrong while trying to read the file.
@@ -31,7 +31,7 @@ function getIgnoreList () {
 }
 
 /**
-  * Get the cspell configuration based on the path provided as argument.
+  * Get the cspell configuration based on the path provided as argument to the script.
   *
   * @returns {Object} The cspell configuration.
   * @throws {Error} If something goes wrong while trying to read the file.
@@ -48,11 +48,12 @@ function getCspellConfig () {
 }
 
 /**
- * Merge the list of words to ignore with the list of words already in the cspell configuration to avoid duplicates.
+ * Merge the list of words to ignore (coming from the ignore-list.txt file)
+ * with the list of words already ignored in the cspell configuration.
  *
- * @param {Object} cspellConfig The cspell configuration.
+ * @param {Object} cspellConfig The current cspell configuration.
  * @param {string[]} ignoreList The list of words to ignore.
- * @returns {string[]} The list of words to ignore.
+ * @returns {string[]} The list of all the words to ignore, without duplicates.
  */
 function getAllWordsToIgnore (cspellConfig, ignoreList) {
   const wordsAlreadyIgnored = cspellConfig.words || []
@@ -60,10 +61,10 @@ function getAllWordsToIgnore (cspellConfig, ignoreList) {
 }
 
 /**
- * Add the list of words to ignore to the cspell configuration.
+ ** Update the cspell configuration file by adding the list of words to ignore.
  *
  * @param {Object} cspellConfig The cspell configuration.
- * @param {string[]} allWordsToIgnore The list of words to ignore.
+ * @param {string[]} allWordsToIgnore The list of unique words to ignore.
  * @returns {void}
  * @throws {Error} If something goes wrong while trying to write the file.
  */
