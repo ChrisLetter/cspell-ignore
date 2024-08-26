@@ -1,12 +1,14 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { homedir } from 'os'
 
 try {
   const ignoreList = getIgnoreList()
   const cspellConfig = getCspellConfig()
-  const allWordsToIgnore = getAllWordsToIgnore(cspellConfig, ignoreList)
+
+  const wordsAlreadyIgnored = cspellConfig.words || []
+  const allWordsToIgnore = Array.from(new Set([...wordsAlreadyIgnored, ...ignoreList]))
+
   updateCspellConfig(cspellConfig, allWordsToIgnore)
 } catch (err) {
   console.error('Something went wrong while updating the cspell configuration:', err)
@@ -38,26 +40,13 @@ function getIgnoreList () {
   */
 function getCspellConfig () {
   try {
-    const cspellPath = join(homedir(), process.argv[2] || 'cspell.json')
+    const cspellPath = join(process.argv[2])
     const config = readFileSync(cspellPath, 'utf8')
     return JSON.parse(config)
   } catch (err) {
     console.error('Something went wrong while trying to read the cspell configuration file:', err)
     process.exit(1)
   }
-}
-
-/**
- * Merge the list of words to ignore (coming from the ignore-list.txt file)
- * with the list of words already ignored in the cspell configuration.
- *
- * @param {Object} cspellConfig The current cspell configuration.
- * @param {string[]} ignoreList The list of words to ignore.
- * @returns {string[]} The list of all the words to ignore, without duplicates.
- */
-function getAllWordsToIgnore (cspellConfig, ignoreList) {
-  const wordsAlreadyIgnored = cspellConfig.words || []
-  return Array.from(new Set([...wordsAlreadyIgnored, ...ignoreList]))
 }
 
 /**
@@ -72,7 +61,7 @@ function updateCspellConfig (cspellConfig, allWordsToIgnore) {
   try {
     cspellConfig.words = allWordsToIgnore
 
-    const cspellPath = join(homedir(), process.argv[2] || 'cspell.json')
+    const cspellPath = join(process.argv[2])
     writeFileSync(cspellPath, JSON.stringify(cspellConfig, null, 2))
   } catch (err) {
     console.error('Something went wrong while trying to write the cspell configuration file:', err)

@@ -23,6 +23,8 @@ local function ignore_word()
   file:write(word_to_ignore .. "\n")
   file:close()
 
+  -- After adding the word to the ignore list, we need to update the cspell configuration file.
+  -- We use node for doing that, since it's easier to manipulate JSON files with javascript.
   os.execute("node " .. current_dir .. "../src/update-cspell-config.mjs" .. " " .. cspell_path)
 end
 
